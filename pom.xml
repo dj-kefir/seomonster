@@ -78,11 +78,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
-        <dependency>
-            <groupId>ru.fourqube.antigate</groupId>
-            <artifactId>antigate-java-api</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>ru.fourqube.antigate</groupId>-->
+            <!--<artifactId>antigate-java-api</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
 
 		<dependency>
 			<groupId>com.h2database</groupId>

@@ -3,9 +3,12 @@ package oz.home.seomonster;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -50,17 +53,19 @@ public class SeomonsterApplicationTests {
 		params.add(new BasicNameValuePair("lr", "213"));
 		params.add(new BasicNameValuePair("p", "0"));
 
+		BasicCookieStore cookieStore = new BasicCookieStore();
+
 		URI uri = new URIBuilder()
 				.setScheme("https")
 				.setHost("yandex.ru")
 				.setPath("/search")
 				.setParameters(params).build();
-//
-//		HttpClient httpClient = HttpClients.custom()
-//				.setSSLHostnameVerifier(new NoopHostnameVerifier())
-//				.build();
 
-		String response = Executor.newInstance()
+		HttpClient httpClient = HttpClients.custom()
+				.setDefaultCookieStore(new BasicCookieStore())
+				.build();
+
+		String response = Executor.newInstance(httpClient)
 				.auth(new HttpHost(proxyHost, proxyPort, "https"), "ystal", "rtgyujscx89")
 				//.authPreemptiveProxy(new HttpHost(proxyHost, proxyPort))
 				.execute(Request.Get(uri.toString())
