@@ -27,6 +27,7 @@
 		<httpclient.version>4.5.2</httpclient.version>
         <jsoup.version>1.9.2</jsoup.version>
         <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-io.version>2.5</commons-io.version>
 	</properties>
 
 	<dependencies>
@@ -78,12 +79,21 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>ru.fourqube.antigate</groupId>-->
             <!--<artifactId>antigate-java-api</artifactId>-->
             <!--<version>1.0</version>-->
         <!--</dependency>-->
-
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>3.1.2</version>
+        </dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

@@ -6,15 +6,14 @@ import lombok.Data;
 import java.net.URI;
 
 /**
- * Created by Igor Ozol
- * on 09.10.2016.
- * Eldorado LLC
+ Обычный элемент поисковой выдачи
  */
 @Data
 @Builder
 public class SerpItem {
 
     Long id;
-    URI url;
+    URI uri;
+    int position;
 
 }

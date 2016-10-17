@@ -1,9 +1,9 @@
 package oz.home.seomonster.service;
 
 import org.jsoup.nodes.Document;
-import oz.home.seomonster.model.SerpItem;
+import oz.home.seomonster.model.Captcha;
+import oz.home.seomonster.model.Serp;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 /**
@@ -13,12 +13,35 @@ import java.util.List;
  */
 public interface SerpService {
 
-    String getCaptchaUrl(Document response);
+    Document getDocument(String response);
+    Serp getSerp(String searchPhrase);
+    List<Serp> getSerps(List<String> phrases);
+    String sendSerpRequest(String phrase);
+    Serp extractSerp(Document document);
+    String sendCaptcha(Captcha captcha);
+    Captcha extractCaptcha(Document document);
+    void saveSerps(List<Serp> serps);
 
-    boolean isRecognizedCaptcha(String captchaUrl) throws MalformedURLException;
 
-    void sendCaptcha(String text);
 
-    List<SerpItem> getSerpItems(String searchPhrase);
+//    BaseSerp getSerpItems(String searchPhrase);
+//
+//    Captcha getCaptcha(Document response);
+//
+//    BaseSerp getSerpResponse(String phrase);
+//    Image extractCaptcha(Document response);
+//    BaseSerp handleCaptcha(Captcha captchaSerp);
+//
+//    default Serp getSerp(String phrase) {
+//
+//        BaseSerp response = getSerpResponse(phrase);
+//
+//        boolean isCaptcha = (response instanceof Captcha);
+//        while (isCaptcha) {
+//            response = handleCaptcha((Captcha)response);
+//        }
+//
+//        return (Serp)response;
+//    }
 
 }

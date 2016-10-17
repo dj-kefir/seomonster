@@ -13,7 +13,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 import oz.home.seomonster.service.ParserUtils;
-import oz.home.seomonster.service.impl.YaSerpServiceImpl;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -95,10 +94,10 @@ public class SeomonsterApplicationTests {
     @Test
 	public void parserUtilsTest() throws IOException, URISyntaxException {
 
-        YaSerpServiceImpl serpService = new YaSerpServiceImpl();
-        ParserUtils parserUtils = new ParserUtils();
-        Document document = parserUtils.getDocumentFromFile("/ya_search_phrase.html");
-        serpService.extractSerpItems(document);
+//        YaSerpServiceImpl serpService = new YaSerpServiceImpl();
+//        ParserUtils parserUtils = new ParserUtils();
+//        Document document = parserUtils.getDocumentFromFile("/ya_search_phrase.html");
+//        serpService.extractSerpItems(document);
 
     }
 }
