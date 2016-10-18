@@ -37,16 +37,24 @@ public abstract class BaseSerpService implements SerpService {
         BaseSerp serp = extractSerp(doc);
 
         while (isNullOrEmptySerp((Serp)serp)) {
-            attemptCount--;
-            while (extractCaptcha(doc) != null) {
-                Captcha captcha = anticaptchaService.evaluateCaptcha((Captcha)serp);
-                String responseAfterCapture  = sendCaptcha(captcha);
-                doc = Jsoup.parse(responseAfterCapture);
-            }
-
             if (attemptCount < 0) {
                 throw new SeoMonsterException("Unrecognized response");
             }
+
+            if (serp == null) {
+                attemptCount--;
+                String repeatedResponse = sendSerpRequest(searchPhrase);
+                doc = Jsoup.parse(repeatedResponse);
+            } else {
+                while ((extractCaptcha(doc) != null) && (attemptCount > 0)) {
+                    attemptCount--;
+                    Captcha captcha = anticaptchaService.evaluateCaptcha((Captcha)serp);
+                    String responseAfterCapture  = sendCaptcha(captcha);
+                    doc = Jsoup.parse(responseAfterCapture);
+                }
+            }
+
+            serp = extractSerp(doc);
         }
 
         return (Serp)serp;

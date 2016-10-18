@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.*;
 import oz.home.seomonster.exceptions.SeoMonsterException;
+import oz.home.seomonster.model.Captcha;
 import oz.home.seomonster.model.Serp;
 import oz.home.seomonster.model.SerpItem;
 
@@ -23,6 +24,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by Igor Ozol
@@ -87,6 +90,8 @@ public class BaseSerpServiceTest {
         Serp serp = yaSerpService.getSerp("колонка beats pill xl цена");
 
         // Verify
+        verify(anticaptchaService, times(BaseSerpService.MAX_ATTEMPT_COUNT)).evaluateCaptcha(any(Captcha.class));
+
     }
 
     @Test
