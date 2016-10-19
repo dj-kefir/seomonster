@@ -30,34 +30,32 @@ public abstract class BaseSerpService implements SerpService {
 
     public final Serp getSerp(String searchPhrase) {
 
-        String response = sendSerpRequest(searchPhrase);
-        Document doc = Jsoup.parse(response);
+//        String response = sendSerpRequest(searchPhrase);
+//        Document doc = Jsoup.parse(response);
+
+        BaseSerp serp = null; //  = extractSerp(doc);
+        Document doc = null;
 
         int attemptCount = MAX_ATTEMPT_COUNT;
-        BaseSerp serp = extractSerp(doc);
-
-        while (isNullOrEmptySerp((Serp)serp)) {
+        while (true) {
             if (attemptCount < 0) {
                 throw new SeoMonsterException("Unrecognized response");
             }
 
-            if (serp == null) {
-                attemptCount--;
-                String repeatedResponse = sendSerpRequest(searchPhrase);
-                doc = Jsoup.parse(repeatedResponse);
+            if (serp instanceof Captcha) {
+                Captcha captcha = extractCaptcha(doc);
+                captcha = anticaptchaService.evaluateCaptcha(captcha);
+                String responseAfterCapture  = sendCaptcha(captcha);
+                doc = Jsoup.parse(responseAfterCapture);
             } else {
-                while ((extractCaptcha(doc) != null) && (attemptCount > 0)) {
-                    attemptCount--;
-                    Captcha captcha = anticaptchaService.evaluateCaptcha((Captcha)serp);
-                    String responseAfterCapture  = sendCaptcha(captcha);
-                    doc = Jsoup.parse(responseAfterCapture);
-                }
+                String response = sendSerpRequest(searchPhrase);
+                doc = Jsoup.parse(response);
             }
 
-            serp = extractSerp(doc);
-        }
+            serp = processSerp(doc);
 
-        return (Serp)serp;
+            attemptCount--;
+        }
     }
 
     private boolean isNullOrEmptySerp(Serp serp) {
@@ -69,5 +67,16 @@ public abstract class BaseSerpService implements SerpService {
 
         searchPhrases.stream().forEach(phrase -> serps.add(getSerp(phrase)));
         return serps;
+    }
+
+    public BaseSerp processSerp(Document document) {
+
+        BaseSerp serp = extractSerp(document);
+        boolean isSerp = serp != null;
+        if (isSerp) {
+            return serp;
+        } else {
+            return extractCaptcha(document);
+        }
     }
 }

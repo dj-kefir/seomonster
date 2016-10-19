@@ -94,7 +94,7 @@ public class YaSerpServiceImpl extends BaseSerpService {
 
         serpItemList.stream().forEach((si) -> log.info("{}", si.getUri()));
 
-        return (serpItemList.size() >0) ? Serp.builder().serpItems(serpItemList).build(): null;
+        return (serpItemList.size() > 0) ? Serp.builder().serpItems(serpItemList).build(): null;
     }
 
     @Override
@@ -115,9 +115,9 @@ public class YaSerpServiceImpl extends BaseSerpService {
             return Captcha.builder().image(image).build();
 
         } catch (Exception e) {
-            throw new SeoMonsterException("Cannot extract captcha image from response", e);
+            log.error("Cannot extract captcha image from response", e);
         }
-
+        return null;
     }
 
     @Override
