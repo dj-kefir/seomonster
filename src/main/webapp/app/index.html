@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="catalogApp">
+<head>
+    <title>Catalog</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css content/css/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="libs/angular-loading-bar/build/loading-bar.css">
+    <!-- endinject -->
+    <!-- endbuild -->
+    <!-- build:css content/css/main.css -->
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <!-- endbuild -->
+</head>
+<body ng-app="SeomonsterApp">
+<div class="container" ng-controller="TestCtrl">
+    <nav><a href="#/">Home</a>|<a href="#/metrics">Метрики</a></nav>
+
+    <div class="well">
+        <button type="button" class="btn btn-default" ng-click="(alert('xxxx')); console.log('debug')" ng-bind="">Run...</button>
+        <ng-view></ng-view>
+    </div>
+</div>
+
+<!-- build:js app/vendor.js -->
+<!-- bower:js -->
+<script src="libs/jquery/dist/jquery.js"></script>
+<script src="libs/angular/angular.js"></script>
+<script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="libs/angular-route/angular-route.js"></script>
+<script src="libs/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+<script src="libs/angular-loading-bar/build/loading-bar.js"></script>
+<!-- endinject -->
+<!-- endbuild -->
+
+<!-- build:js app/app.js  -->
+<!-- inject:js -->
+<script src="js/app.module.js"></script>
+<script src="js/home/home.controller.js"></script>
+<script src="js/metrics/metrics.controller.js"></script>
+<script src="js/metrics/metrics.service.js"></script>
+<script src="js/metrics/metrics.modal.controller.js"></script>
+<!-- endinject -->
+<!-- endbuild -->
+
+<script>
+    (function() {
+        'use strict'
+
+        var app = angular.module('SeomonsterApp', []);
+
+        app.controller('TestCtrl', function ($scope) {
+            console.log("click...")
+        })
+    })();
+
+</script>
+</body>
+</html>

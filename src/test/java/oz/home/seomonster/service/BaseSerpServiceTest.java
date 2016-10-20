@@ -1,15 +1,15 @@
 package oz.home.seomonster.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.internal.Characters;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.model.Captcha;
-import oz.home.seomonster.model.LomboTest;
 import oz.home.seomonster.model.Serp;
 
 import java.io.File;
@@ -19,11 +19,10 @@ import java.net.URL;
 import java.util.Scanner;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
