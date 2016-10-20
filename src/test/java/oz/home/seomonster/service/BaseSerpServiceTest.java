@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.*;
 import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.model.Captcha;
+import oz.home.seomonster.model.LomboTest;
 import oz.home.seomonster.model.Serp;
 
 import java.io.File;
@@ -18,13 +19,12 @@ import java.net.URL;
 import java.util.Scanner;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Igor Ozol
@@ -97,9 +97,10 @@ public class BaseSerpServiceTest {
     @Test
     public void getSerpCaptchaSuccessSendingTest() {
         // Given
+        ((BaseSerpService)yaSerpService).anticaptchaService = anticaptchaService;
         doReturn(yaCaptchaResponse).when(yaSerpService).sendSerpRequest(anyString());
         doReturn(yaSerpResponse).when(yaSerpService).sendCaptcha(any(Captcha.class));
-        doReturn().when(yaSerpService).
+        doReturn(Captcha.builder().recognizedResult("щипок").build()).when(anticaptchaService).evaluateCaptcha(any(Captcha.class));
 
         // When
         Serp serp = yaSerpService.getSerp("колонка beats pill xl цена");

@@ -115,7 +115,7 @@ public class YaSerpServiceImpl extends BaseSerpService {
             return Captcha.builder().image(image).build();
 
         } catch (Exception e) {
-            log.error("Cannot extract captcha image from response", e);
+            log.debug("Cannot extract captcha image from response");
         }
         return null;
     }

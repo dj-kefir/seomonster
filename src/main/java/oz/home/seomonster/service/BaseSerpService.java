@@ -11,11 +11,6 @@ import oz.home.seomonster.model.Serp;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Igor Ozol
- * on 16.10.2016.
- * Eldorado LLC
- */
 public abstract class BaseSerpService implements SerpService {
 
     public static final int MAX_ATTEMPT_COUNT = 10;
@@ -30,22 +25,18 @@ public abstract class BaseSerpService implements SerpService {
 
     public final Serp getSerp(String searchPhrase) {
 
-//        String response = sendSerpRequest(searchPhrase);
-//        Document doc = Jsoup.parse(response);
-
         BaseSerp serp = null; //  = extractSerp(doc);
         Document doc = null;
 
         int attemptCount = MAX_ATTEMPT_COUNT;
         while (true) {
             if (attemptCount < 0) {
-                throw new SeoMonsterException("Unrecognized response");
+                throw new SeoMonsterException("Unrecognized response. AttemptCount > " + MAX_ATTEMPT_COUNT);
             }
 
             if (serp instanceof Captcha) {
-                Captcha captcha = extractCaptcha(doc);
-                captcha = anticaptchaService.evaluateCaptcha(captcha);
-                String responseAfterCapture  = sendCaptcha(captcha);
+                Captcha captcha = anticaptchaService.evaluateCaptcha((Captcha)serp);
+                String responseAfterCapture = sendCaptcha(captcha);
                 doc = Jsoup.parse(responseAfterCapture);
             } else {
                 String response = sendSerpRequest(searchPhrase);
@@ -53,13 +44,10 @@ public abstract class BaseSerpService implements SerpService {
             }
 
             serp = processSerp(doc);
+            if (serp instanceof Serp) return (Serp)serp;
 
             attemptCount--;
         }
-    }
-
-    private boolean isNullOrEmptySerp(Serp serp) {
-        return (serp == null || serp.getSerpItems().size() <= 0);
     }
 
     public final List<Serp> getSerps(List<String> searchPhrases) {
