@@ -1,12 +1,12 @@
+var concat = require('gulp-concat'); // Подключаем gulp-concat (для конкатенации файлов)
+var gulp = require('gulp'); // Подключаем Gulp
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var browserSync = require('browser-sync'); // Подключаем Browser Sync
 var proxyMiddleware = require('http-proxy-middleware');
-var bowerFiles = require('main-bower-files'); // Собирает пути всех установленных либ (для конкатенации файлов)
-var concat = require('gulp-concat'); // Подключаем gulp-concat (для конкатенации файлов)
 var uglify = require('gulp-uglifyjs'); // Подключаем gulp-uglifyjs (для сжатия JS)
+var bowerFiles = require('main-bower-files'); // Собирает пути всех установленных либ (для конкатенации файлов)
 var del = require('del'); // Подключаем библиотеку для удаления файлов и папок
-var gulp = require('gulp'); // Подключаем Gulp
 var config = require('./gulp/config');
 
 
@@ -17,10 +17,10 @@ gulp
     });
 
 gulp.task('browser-sync', function () { // Создаем таск browser-sync
-    var proxy = proxyMiddleware('/management', {target: 'http://localhost:8080'});
+    var proxy = proxyMiddleware('/api', {target: 'http://localhost:8080'});
     browserSync({ // Выполняем browser Sync
         server: {
-            baseDir: './app',
+            baseDir: config.app + 'app',
             middleware: [proxy]
         },
         notify: false // Отключаем уведомления
@@ -31,9 +31,9 @@ gulp.task('browser-sync', function () { // Создаем таск browser-sync
 gulp.task('watch', ['browser-sync'], function () {
 //gulp.task('watch', ['browser-sync', 'scripts', 'styles'], function () {
 //   gulp.watch('app/sass/**/*.sass', ['sass']); // Наблюдение за sass файлами в папке sass
-    gulp.watch('app/css/**/*.css', browserSync.reload); // Наблюдение за css файлами в папке css
-    gulp.watch(['app/*.html', 'app/js/**/*.html'], browserSync.reload); // Наблюдение за HTML файлами в корне проекта
-    gulp.watch('app/js/**/*.js', browserSync.reload); // Наблюдение за JS файлами в папке js
+    gulp.watch(config.app + 'app/css/**/*.css', browserSync.reload); // Наблюдение за css файлами в папке css
+    gulp.watch([config.app + 'app/*.html', config.app + 'app/js/**/*.html'], browserSync.reload); // Наблюдение за HTML файлами в корне проекта
+    gulp.watch(config.app + 'app/js/**/*.js', browserSync.reload); // Наблюдение за JS файлами в папке js
 });
 
 gulp.task('scripts-libs', function () {
@@ -67,7 +67,7 @@ gulp.task('build', ['clean', 'scripts-libs', 'less-libs'], function () {
     // var buildFonts = gulp.src('app/fonts/**/*') // Переносим шрифты в продакшен
     //     .pipe(gulp.dest('dist/fonts'))
 
-    var buildJs = gulp.src('app/js/**/*') // Переносим скрипты в продакшен
+    var buildJs = gulp.src(config.app + 'app/js/**/*') // Переносим скрипты в продакшен
         .pipe(gulp.dest('dist/app/js'));
 
     var buildHtml = gulp.src('app/*.html') // Переносим HTML в продакшен

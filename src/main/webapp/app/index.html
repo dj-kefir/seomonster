@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="catalogApp">
+<html ng-app="seomonsterApp">
 <head>
     <title>Catalog</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -13,12 +13,23 @@
     <!--<link rel="stylesheet" href="css/main.css">-->
     <!-- endbuild -->
 </head>
-<body ng-app="SeomonsterApp">
+<body>
 <div class="container" ng-controller="TestCtrl">
     <nav><a href="#/">Home</a>|<a href="#/metrics">Метрики</a></nav>
 
     <div class="well">
-        <button type="button" class="btn btn-default" ng-click="(alert('xxxx')); console.log('debug')" ng-bind="">Run...</button>
+        <label for="phrases">Фразы:</label>
+        <div class="row">
+            <div class="col-md-6">
+                <textarea class="form-control" rows="5" id="phrases" ng-model="phrases"></textarea>
+            </div>
+            <div class="col-md-6">
+                <textarea class="form-control" rows="5" id="response" ng-bind="response.message"></textarea>
+            </div>
+            <!--<h2>{{phrases}}</h2>-->
+        </div>
+        <button ng-click="onclick()" >GET</button><br>
+        <button ng-click="sendData()" >SEND</button><br>
         <ng-view></ng-view>
     </div>
 </div>
@@ -36,23 +47,57 @@
 
 <!-- build:js app/app.js  -->
 <!-- inject:js -->
-<script src="js/app.module.js"></script>
-<script src="js/home/home.controller.js"></script>
-<script src="js/metrics/metrics.controller.js"></script>
-<script src="js/metrics/metrics.service.js"></script>
-<script src="js/metrics/metrics.modal.controller.js"></script>
+<!--<script src="js/app.module.js"></script>-->
+<!--<script src="js/home/home.controller.js"></script>-->
+<!--<script src="js/metrics/metrics.controller.js"></script>-->
+<!--<script src="js/metrics/metrics.service.js"></script>-->
+<!--<script src="js/metrics/metrics.modal.controller.js"></script>-->
 <!-- endinject -->
 <!-- endbuild -->
 
 <script>
     (function() {
-        'use strict'
+        'use strict';
 
-        var app = angular.module('SeomonsterApp', []);
+        var app = angular.module('seomonsterApp', []);
 
-        app.controller('TestCtrl', function ($scope) {
-            console.log("click...")
+        app.constant('api', {
+            'testUrl' : 'request.json',
+            'get' : 'getUrls',
+            'post' : 'api/phrases'
+        });
+
+        app.controller('TestCtrl', function ($scope, $http, api) {
+
+            var dataToServer = $scope.phrases;
+
+            var config = {
+                headers : {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                }
+            };
+
+            $scope.onclick = function () {
+                console.log(dataToServer);
+                $http.get(api.testUrl).success(function (response) {
+                    $scope.urls = response.urls;
+                });
+            };    
+            $scope.sendData = function () {
+                console.log(dataToServer);
+                dataToServer = $scope.phrases;
+                var res = $http.post(api.post,$scope.phrases, config);
+                res.success(function(response, status, headers, config) {
+                    console.info(response);
+                    $scope.response = response;
+                });
+                res.error(function(data, status, headers, config) {
+                    alert( "failure message: " + JSON.stringify({data: data}));
+                });
+            }    
         })
+        
+        
     })();
 
 </script>
