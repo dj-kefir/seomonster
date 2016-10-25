@@ -1,4 +1,4 @@
-package oz.home.seomonster;
+package oz.home.seomonster.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import oz.home.seomonster.model.SerpItem;
+import oz.home.seomonster.service.CsvProxyServiceImpl;
+import oz.home.seomonster.service.ProxyService;
+import oz.home.seomonster.service.SerpService;
+import oz.home.seomonster.service.YaSerpServiceImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +34,26 @@ import static org.mockito.Mockito.doReturn;
  */
 @Slf4j
 public class YaSerpServiceImplTest {
+
+    @Spy
+    SerpService serpService = new YaSerpServiceImpl();
+
+    @Before
+    public void init() {
+        ((YaSerpServiceImpl)serpService).proxyService = new CsvProxyServiceImpl();
+    }
+
+    @Test
+    public void sendSerpRequestTest() {
+        // Given
+
+        // Then
+        serpService.sendSerpRequest("Фраза");
+
+        // Verify
+        log.info(serpService.sendSerpRequest("Нужна работа"));
+
+    }
 
 //    @Spy
 //    YaSerpServiceImpl yaSerpService = new YaSerpServiceImpl();

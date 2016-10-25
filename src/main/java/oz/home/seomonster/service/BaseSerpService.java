@@ -43,7 +43,7 @@ public abstract class BaseSerpService implements SerpService {
                 doc = Jsoup.parse(response);
             }
 
-            serp = processSerp(doc);
+            serp = processDoc(doc);
             if (serp instanceof Serp) return (Serp)serp;
 
             attemptCount--;
@@ -57,7 +57,7 @@ public abstract class BaseSerpService implements SerpService {
         return serps;
     }
 
-    public BaseSerp processSerp(Document document) {
+    public BaseSerp processDoc(Document document) {
 
         BaseSerp serp = extractSerp(document);
         boolean isSerp = serp != null;

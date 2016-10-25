@@ -1,5 +1,6 @@
 package oz.home.seomonster.service;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
@@ -14,6 +15,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.model.Captcha;
+import oz.home.seomonster.model.Proxy;
 import oz.home.seomonster.model.Serp;
 import oz.home.seomonster.model.SerpItem;
 
@@ -25,6 +27,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Igor Ozol
@@ -40,12 +43,24 @@ public class YaSerpServiceImpl extends BaseSerpService {
     @Autowired
     private AnticaptchaService anticaptchaService;
 
+    @Autowired
+    protected ProxyService proxyService;
 
     @Override
+    @SneakyThrows
     public String sendSerpRequest(String phrase) {
 
-        int proxyPort = 65233;
-        String proxyHost = "80.78.247.58";
+        Proxy proxy = null;
+        while (proxy == null) {
+            proxy = proxyService.getNewProxy();
+            if (proxy != null) break;
+
+            log.info("Кончились свободные прокси...timeout 30sec.");
+            TimeUnit.SECONDS.sleep(30);
+        }
+
+        int proxyPort = proxy.getPort();
+        String proxyHost = proxy.getHost();
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("text", phrase));
@@ -61,7 +76,7 @@ public class YaSerpServiceImpl extends BaseSerpService {
                     .setParameters(params).build();
 
             response = Executor.newInstance()
-                    .auth(new HttpHost(proxyHost, proxyPort, "https"), "ystal", "rtgyujscx89")
+                    .auth(new HttpHost(proxyHost, proxyPort, proxy.getSchema()), proxy.getLogin(), proxy.getPassword())
                     //.authPreemptiveProxy(new HttpHost(proxyHost, proxyPort))
                     .execute(Request.Get(uri.toString())
                             .connectTimeout(5000)

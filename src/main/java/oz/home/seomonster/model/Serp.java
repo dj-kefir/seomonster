@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class Serp extends BaseSerp {
 
+
     List<SerpItem> serpItems;
 
 }

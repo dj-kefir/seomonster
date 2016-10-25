@@ -10,9 +10,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.nodes.Document;
 import org.junit.Test;
-import oz.home.seomonster.service.ParserUtils;
 
 import java.io.IOException;
 import java.net.InetAddress;
