@@ -1,4 +1,4 @@
-package oz.home.seomonster.service;
+package oz.home.seomonster.service.impl;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,6 +7,8 @@ import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.model.BaseSerp;
 import oz.home.seomonster.model.Captcha;
 import oz.home.seomonster.model.Serp;
+import oz.home.seomonster.service.AnticaptchaService;
+import oz.home.seomonster.service.SerpService;
 
 import java.util.ArrayList;
 import java.util.List;

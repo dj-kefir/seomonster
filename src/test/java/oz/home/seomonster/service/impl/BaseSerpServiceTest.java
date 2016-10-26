@@ -1,4 +1,4 @@
-package oz.home.seomonster.service;
+package oz.home.seomonster.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -11,6 +11,10 @@ import org.mockito.Spy;
 import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.model.Captcha;
 import oz.home.seomonster.model.Serp;
+import oz.home.seomonster.service.AnticaptchaService;
+import oz.home.seomonster.service.SerpService;
+import oz.home.seomonster.service.impl.BaseSerpService;
+import oz.home.seomonster.service.impl.YaSerpServiceImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +40,7 @@ public class BaseSerpServiceTest {
     public static final String EOS = "\\Z";
     @Spy
     //@InjectMocks
-    SerpService yaSerpService = new YaSerpServiceImpl();// Mockito.mock(BaseSerpService.class, Mockito.CALLS_REAL_METHODS);
+            SerpService yaSerpService = new YaSerpServiceImpl();// Mockito.mock(BaseSerpService.class, Mockito.CALLS_REAL_METHODS);
 
     @Mock
     AnticaptchaService anticaptchaService;

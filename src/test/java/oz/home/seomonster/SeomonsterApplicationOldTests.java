@@ -24,7 +24,7 @@ import java.util.List;
 //@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, MongoAutoConfiguration.class,  MongoDataAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 //@RunWith(TestJunit.class)
 @Slf4j
-public class SeomonsterApplicationTests {
+public class SeomonsterApplicationOldTests {
 
 	/**
 	 * 80.78.247.58

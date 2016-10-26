@@ -1,4 +1,4 @@
-package oz.home.seomonster.service;
+package oz.home.seomonster.utils;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;

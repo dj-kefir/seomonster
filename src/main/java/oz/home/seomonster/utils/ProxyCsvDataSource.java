@@ -1,14 +1,15 @@
-package oz.home.seomonster.service;
+package oz.home.seomonster.utils;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 import oz.home.seomonster.model.Proxy;
+import oz.home.seomonster.utils.CsvUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Component
-public class SetupData {
+public class ProxyCsvDataSource {
 
     private String proxyFileName = "/proxies.csv";
 

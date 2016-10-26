@@ -10,14 +10,6 @@ import java.util.Map;
  * on 12.10.2016.
  * Eldorado LLC
  */
-public class ClusterService {
+public interface ClusterService {
 
-
-    public static void main(String[] args) {
-
-        Map<String, List<URL>> phraseToUrlListMap = new HashMap<>();
-
-
-
-    }
 }

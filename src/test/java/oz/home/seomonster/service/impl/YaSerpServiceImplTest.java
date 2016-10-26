@@ -1,31 +1,24 @@
-package oz.home.seomonster.service;
+package oz.home.seomonster.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import oz.home.seomonster.model.SerpItem;
-import oz.home.seomonster.service.CsvProxyServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import oz.home.seomonster.SeoMonsterTestSupport;
 import oz.home.seomonster.service.ProxyService;
 import oz.home.seomonster.service.SerpService;
-import oz.home.seomonster.service.YaSerpServiceImpl;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.List;
-import java.util.Scanner;
+import oz.home.seomonster.service.impl.CsvProxyServiceImpl;
+import oz.home.seomonster.service.impl.YaSerpServiceImpl;
+import oz.home.seomonster.utils.ProxyUtil;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Igor Ozol
@@ -33,22 +26,29 @@ import static org.mockito.Mockito.doReturn;
  * Eldorado LLC
  */
 @Slf4j
-public class YaSerpServiceImplTest {
+public class YaSerpServiceImplTest extends SeoMonsterTestSupport {
 
-    @Spy
-    SerpService serpService = new YaSerpServiceImpl();
+    @InjectMocks
+    @Autowired
+    SerpService serpService; //= new YaSerpServiceImpl();
+
+    @Mock
+    ProxyService proxyService;
 
     @Before
     public void init() {
-        ((YaSerpServiceImpl)serpService).proxyService = new CsvProxyServiceImpl();
+        MockitoAnnotations.initMocks(this);
+
+      //  ((YaSerpServiceImpl)serpService).proxyService = new CsvProxyServiceImpl();
     }
 
     @Test
     public void sendSerpRequestTest() {
         // Given
+        when(proxyService.getNewProxy()).thenReturn(ProxyUtil.createProxy());
 
         // Then
-        serpService.sendSerpRequest("Фраза");
+        serpService.sendSerpRequest("Купить телефон");
 
         // Verify
         log.info(serpService.sendSerpRequest("Нужна работа"));
