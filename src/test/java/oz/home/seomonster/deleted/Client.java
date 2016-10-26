@@ -7,6 +7,7 @@ import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.*;
 import java.net.Proxy;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Ozol on 26.10.2016.
@@ -19,7 +20,9 @@ public class Client {
     // http://stackoverflow.com/questions/22937983/how-to-use-socks-5-proxy-with-apache-http-client-4
     public static void main(String[] args) throws IOException {
 
-//        java.net.Authenticator authenticator = new java.net.Authenticator() {
+        socks();
+        httpProxy();
+        //        java.net.Authenticator authenticator = new java.net.Authenticator() {
 //            @Override
 //            protected java.net.PasswordAuthentication getPasswordAuthentication() {
 //                return new java.net.PasswordAuthentication(socksProxyUserName, socksProxyPassword.toCharArray());
@@ -27,17 +30,28 @@ public class Client {
 //
 //        };
 
+        if (true) return;
+
         System.setProperty("socksProxyHost", "185.118.66.88");
-        System.setProperty("socksProxyPort", "16015");
+        System.setProperty("socksProxyPort", "32015");
         System.setProperty("java.net.socks.username", "ystal"); //$NON-NLS-1$
         System.setProperty("java.net.socks.password", "gzsdfjn"); //$NON-NLS-1$
         //java.net.Authenticator.setDefault(authenticator);
 
-        Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("185.118.66.88", 16015));
-//        Socket socket = new Socket(proxy);
+        Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("185.118.66.88", 32015));
+        //Socket socket = new Socket(proxy);
 
-        URL url = new URL("http://javainside.ru");
-        URLConnection conn = url.openConnection(proxy);
+        System.out.println("Begin...");
+        URL url = new URL("http://ya.ru");
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection(proxy);
+        HttpURLConnection.setFollowRedirects(false);
+        conn.setConnectTimeout(5*1000);
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
+        conn.connect();
+
+
 
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 conn.getInputStream()));
@@ -51,6 +65,61 @@ public class Client {
 
 //        InputStream sin = socket.getInputStream();
 //        OutputStream sout = socket.getOutputStream();
+    }
+
+    private static void socks() throws IOException {
+        System.setProperty("socksProxyHost", "185.118.66.88");
+        System.setProperty("socksProxyPort", "32015");
+        System.setProperty("socksProxyPort", "32015");
+        System.setProperty("java.net.socks.username", "ystal"); //$NON-NLS-1$
+        System.setProperty("java.net.socks.password", "gzsdfjn"); //$NON-NLS-1$
+
+        Authenticator.setDefault(new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new
+                        PasswordAuthentication("ystal","gzsdfjn".toCharArray());
+            }});
+
+        Proxy p = new Proxy(Proxy.Type.SOCKS,  new InetSocketAddress("185.118.66.88", 32015));
+        Socket s = new Socket(p);
+        InetSocketAddress addr = InetSocketAddress.createUnresolved("https://ya.ru", 8080);
+        s.connect(addr);
+
+    }
+
+    private static void httpProxy() throws IOException {
+       // System.setProperty("java.net.useSystemProxies", "true");
+//        System.setProperty("http.proxyHost", "185.118.66.88");
+//        System.setProperty("http.proxyPort", "1605");
+//        System.setProperty("http.proxyHost", "89.165.65.88");
+//        System.setProperty("http.proxyPort", "8080");
+//        System.setProperty("http.proxyUser", "ystal");
+//        System.setProperty("http.proxyPassword", "gzsdfjn");
+//        Authenticator.setDefault(new ProxyAuth("ystal", "gzsdfjn"));
+
+
+        Authenticator.setDefault(new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new
+                        PasswordAuthentication("ystal","gzsdfjn".toCharArray());
+            }});
+
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("185.118.66.88", 1605));
+        //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("89.165.65.88", 8080));
+        URL url = new URL("https://ya.ru");
+        HttpURLConnection uc = (HttpURLConnection)url.openConnection(proxy);
+
+//        HttpURLConnection uc = (HttpURLConnection)url.openConnection();
+        uc.connect();
+
+        StringBuffer tmp = new StringBuffer();
+        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null){
+            tmp.append(line + "\n");
+        }
+        System.out.println(tmp.toString());
+
     }
 
 //    public static void main(String[] args) {
@@ -119,5 +188,17 @@ public class Client {
 //            e.printStackTrace();
 //        }
 //    }
+
+    public static class ProxyAuth extends Authenticator {
+        private PasswordAuthentication auth;
+
+        private ProxyAuth(String user, String password) {
+            auth = new PasswordAuthentication(user, password == null ? new char[]{} : password.toCharArray());
+        }
+
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return auth;
+        }
+    }
 }
 
