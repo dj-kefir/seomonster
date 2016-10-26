@@ -14,6 +14,9 @@ import java.net.Proxy;
 public class Client {
 
     // http://stackoverflow.com/questions/1388822/how-can-i-configure-httpclient-to-authenticate-against-a-socks-proxy/1388903#1388903
+    // http://madhurtanwani.blogspot.ru/2010/05/using-proxyselector-to-take-control-of.html
+    // http://www.rgagnon.com/javadetails/java-0085.html
+    // http://stackoverflow.com/questions/22937983/how-to-use-socks-5-proxy-with-apache-http-client-4
     public static void main(String[] args) throws IOException {
 
 //        java.net.Authenticator authenticator = new java.net.Authenticator() {
