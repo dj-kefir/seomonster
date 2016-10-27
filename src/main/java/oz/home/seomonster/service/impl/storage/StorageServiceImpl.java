@@ -1,25 +1,29 @@
-package oz.home.seomonster.service.impl;
+package oz.home.seomonster.service.impl.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+import oz.home.seomonster.exceptions.SeoMonsterException;
 import oz.home.seomonster.service.StorageService;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-/**
- * Created by Ozol on 27.10.2016.
- */
+@Service
 public class StorageServiceImpl implements StorageService {
-    private final Path rootLocation;
+    private Path rootLocation;
 
     @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
+    public void FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
@@ -61,11 +65,11 @@ public class StorageServiceImpl implements StorageService {
                 return resource;
             }
             else {
-                throw new StorageFileNotFoundException("Could not read file: " + filename);
+                throw new SeoMonsterException("Could not read file: " + filename);
 
             }
         } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+            throw new SeoMonsterException("Could not read file: " + filename, e);
         }
     }
 
@@ -74,7 +78,7 @@ public class StorageServiceImpl implements StorageService {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
-    @Override
+    @PostConstruct
     public void init() {
         try {
             Files.createDirectory(rootLocation);
