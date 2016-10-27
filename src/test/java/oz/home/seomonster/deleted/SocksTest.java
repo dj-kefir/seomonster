@@ -24,6 +24,7 @@ public class SocksTest {
 
     public static void main(String[] args)throws Exception {
         Registry<ConnectionSocketFactory> reg = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", new SocksConnectionSocketFactory())
                 .register("https", new SocksConnectionSocketFactory())
                 .build();
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(reg);
@@ -36,7 +37,7 @@ public class SocksTest {
 
             HttpClientContext context = HttpClientContext.create();
             context.setAttribute("socks.address", socksaddr);
-            HttpHost target = new HttpHost("yandex.ru", 80, "https");
+            HttpHost target = new HttpHost("yandex.ru", 443, "https");
             HttpGet request = new HttpGet("/");
             request.addHeader("Content-Type","application/xml;charset=UTF-8");
            // System.out.println("Executing request " + request + " to " + target + " via SOCKS proxy " + socksaddr);

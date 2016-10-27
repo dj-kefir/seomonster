@@ -114,11 +114,16 @@
             <version>2.5.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.fengyouchao</groupId>
-            <artifactId>sockslib</artifactId>
-            <version>9cbed12</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.github.fengyouchao</groupId>-->
+            <!--<artifactId>sockslib</artifactId>-->
+            <!--<version>1.0.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
 
 	</dependencies>
 
@@ -140,10 +145,10 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>jitpack.io</id>-->
+            <!--<url>https://jitpack.io</url>-->
+        <!--</repository>-->
     </repositories>
 
 

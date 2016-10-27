@@ -31,6 +31,12 @@
         <button ng-click="onclick()" >GET</button><br>
         <button ng-click="sendData()" >SEND</button><br>
         <ng-view></ng-view>
+
+        <form action="api/upload" method="post" enctype="multipart/form-data">
+            Select file to upload:
+            <input type="file" name="file" id="fileToUpload">
+            <input type="submit" value="Upload csv" name="submit">
+        </form>
     </div>
 </div>
 
