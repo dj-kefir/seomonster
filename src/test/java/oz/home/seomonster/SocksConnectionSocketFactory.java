@@ -50,7 +50,8 @@ public class SocksConnectionSocketFactory implements ConnectionSocketFactory {
             sock.bind(localAddress);
         }
         try {
-            sock.connect(remoteAddress, connectTimeout);
+            //sock.connect(remoteAddress, connectTimeout);
+            sock.connect(remoteAddress, 5*1000);
         } catch (SocketTimeoutException ex) {
             throw new ConnectTimeoutException(ex, host, remoteAddress.getAddress());
         }
