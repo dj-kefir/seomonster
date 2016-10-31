@@ -81,6 +81,7 @@ public class StorageServiceImpl implements StorageService {
     @PostConstruct
     public void init() {
         try {
+            deleteAll();
             Files.createDirectory(rootLocation);
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);

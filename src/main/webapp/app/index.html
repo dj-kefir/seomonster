@@ -37,6 +37,17 @@
             <input type="file" name="file" id="fileToUpload">
             <input type="submit" value="Upload csv" name="submit">
         </form>
+
+        <form ng-submit="submitProject()">
+            Название проекта:
+            <input type="text" size="40" ng-model="project.name">
+            Описание:
+            <textarea ng-model="project.description"></textarea>
+            <input type="submit" value="создать" name="submit">
+        </form>
+        <pre>
+            {{ project }}
+        </pre>
     </div>
 </div>
 
@@ -70,12 +81,14 @@
         app.constant('api', {
             'testUrl' : 'request.json',
             'get' : 'getUrls',
-            'post' : 'api/phrases'
+            'post' : 'api/phrases',
+            'PROJECTS' : 'api/projects'
         });
 
         app.controller('TestCtrl', function ($scope, $http, api) {
 
-            var dataToServer = $scope.phrases;
+            var dataToServer;
+            var projectToServer;
 
             var config = {
                 headers : {
@@ -100,7 +113,22 @@
                 res.error(function(data, status, headers, config) {
                     alert( "failure message: " + JSON.stringify({data: data}));
                 });
-            }    
+            };
+
+            $scope.submitProject = function() {
+                projectToServer = $scope.project;
+                console.log("click submit project btn, data: ", projectToServer)
+
+                var res = $http.post(api.PROJECTS, projectToServer);
+                res.success(function(response, status, headers, config) {
+                    console.info(response);
+                    $scope.response = response;
+                });
+                res.error(function(data, status, headers, config) {
+                    alert( "failure message: " + JSON.stringify({data: data}));
+                });
+
+            }
         })
         
         
