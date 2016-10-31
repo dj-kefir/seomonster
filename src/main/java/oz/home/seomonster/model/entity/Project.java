@@ -1,9 +1,9 @@
 package oz.home.seomonster.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.validation.constraints.NotNull;
+import java.nio.file.Path;
 
 @Data
 @Builder
@@ -11,8 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Project {
 
+    @NonNull
+    Long id;
+
+    @NonNull
     String name;
+
+    @NonNull
     String description;
-//    List<Path> files;
+
+    @NonNull
+    Path file;
 
 }
